@@ -35,6 +35,8 @@ function spawnPiece(type) {
 
 // move the blocks in play down
 function moveBlocks() {
+  checkCollisionsDown();
+  gameOver();
   for (let i = blocks.length - 1; i >= 0; i--) {
     if (blocks[i].classList.contains("in-play")) {
       let classes = Array.from(blocks[i].classList);
@@ -47,8 +49,6 @@ function moveBlocks() {
       }
     }
   }
-  checkCollisionsDown();
-  gameOver();
 }
 
 // check to see if blocks can move down
@@ -70,10 +70,11 @@ function checkCollisionsDown() {
         // clearInterval(timer);
         // timer = null;
         spawnPiece("square");
-        break;
+        return true;
       }
     }
   }
+  return false;
 }
 
 // check for game over
@@ -95,7 +96,7 @@ function gameOver() {
 function userMoveBlock(e) {
   switch (e.key) {
     case "ArrowLeft":
-      collision = checkCollisionsLeft();
+      collision = checkCollisionsLeft() && checkCollisionsDown;
       if (!collision) {
         moveBlockLeft();
       }
@@ -148,4 +149,4 @@ function moveBlockLeft() {
 document.addEventListener("keyup", userMoveBlock);
 
 spawnPiece("square");
-timer = setInterval(moveBlocks, 500);
+timer = setInterval(moveBlocks, 200);
