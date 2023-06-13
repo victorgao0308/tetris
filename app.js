@@ -94,15 +94,19 @@ function gameOver() {
 
 // let the user move the block left and right
 function userMoveBlock(e) {
+  blocksArray = Array.from(document.querySelectorAll(".in-play"));
   switch (e.key) {
     case "ArrowLeft":
-      collision = checkCollisionsLeft() && checkCollisionsDown;
+      collision = checkCollisionsLeft(blocksArray) && checkCollisionsDown;
       if (!collision) {
-        moveBlockLeft();
+        moveBlockLeft(blocksArray);
       }
       break;
     case "ArrowRight":
-      console.log("move right");
+      collision = checkCollisionsRight(blocksArray) && checkCollisionsDown;
+      if (!collision) {
+        moveBlockRight(blocksArray);
+      }
       break;
     case "ArrowUp":
       console.log("rotate block");
@@ -113,15 +117,14 @@ function userMoveBlock(e) {
 }
 
 // check for collisions to the left
-function checkCollisionsLeft() {
-  const blocksArray = Array.from(document.querySelectorAll(".in-play"));
+function checkCollisionsLeft(blocksArray) {
   for (let i = 0; i < blocksArray.length; i++) {
-    let id = blocksArray[i].getAttribute("id");
+    let id = parseInt(blocksArray[i].getAttribute("id"));
     // block is located on the left edge of the board
     if (id % 10 === 0) {
       return true;
     }
-    // there is a staic block to the left of a block in-play
+    // there is a static block to the left of a block in-play
     let leftBlock = blocks[id - 1];
     if (leftBlock.classList.contains("static")) {
       return true;
@@ -130,18 +133,65 @@ function checkCollisionsLeft() {
   return false;
 }
 
+// check for collisions to the right
+function checkCollisionsRight(blocksArray) {
+  for (let i = 0; i < blocksArray.length; i++) {
+    let id = parseInt(blocksArray[i].getAttribute("id"));
+    // block is located on the right edge of the board
+    if (id % 10 === 9) {
+      return true;
+    }
+    // there is a static block to the right of a block in-play
+    let rightBlock = blocks[id + 1];
+    if (rightBlock.classList.contains("static")) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // moves block to the left
-function moveBlockLeft() {
-  const blocksArray = Array.from(document.querySelectorAll(".in-play"));
+function moveBlockLeft(blocksArray) {
+    let newBlocks = [];
+    let classes = new Set();
+    blocksArray.forEach((block) => {
+      let id = parseInt(block.getAttribute("id"));
+      let classList = Array.from(blocks[id].classList);
+      let leftBlock = blocks[id - 1];
+      newBlocks.push(leftBlock);
+      for (let j = 0; j < classList.length; j++) {
+        if (classList[j] != "block") {
+          block.classList.remove(classList[j]);
+          classes.add(classList[j]);
+        }
+      }
+    });
+    newBlocks.forEach((block) => {
+      for (const c of classes) {
+        block.classList.add(c);
+      }
+    });
+  }
+
+// move blocks to the right
+function moveBlockRight(blocksArray) {
+  let newBlocks = [];
+  let classes = new Set();
   blocksArray.forEach((block) => {
-    const id = block.getAttribute("id");
+    let id = parseInt(block.getAttribute("id"));
     let classList = Array.from(blocks[id].classList);
-    let leftBlock = blocks[id - 1];
+    let rightBlock = blocks[id + 1];
+    newBlocks.push(rightBlock);
     for (let j = 0; j < classList.length; j++) {
       if (classList[j] != "block") {
         block.classList.remove(classList[j]);
-        leftBlock.classList.add(classList[j]);
+        classes.add(classList[j]);
       }
+    }
+  });
+  newBlocks.forEach((block) => {
+    for (const c of classes) {
+      block.classList.add(c);
     }
   });
 }
@@ -149,4 +199,4 @@ function moveBlockLeft() {
 document.addEventListener("keyup", userMoveBlock);
 
 spawnPiece("square");
-timer = setInterval(moveBlocks, 200);
+timer = setInterval(moveBlocks, 100);
