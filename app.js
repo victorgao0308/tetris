@@ -95,7 +95,6 @@ function gameOver() {
 function userMoveBlock(e) {
   switch (e.key) {
     case "ArrowLeft":
-      console.log("move left");
       collision = checkCollisionsLeft();
       if (!collision) {
         moveBlockLeft();
@@ -121,8 +120,13 @@ function checkCollisionsLeft() {
     if (id % 10 === 0) {
       return true;
     }
-    return false;
+    // there is a staic block to the left of a block in-play
+    let leftBlock = blocks[id - 1];
+    if (leftBlock.classList.contains("static")) {
+      return true;
+    }
   }
+  return false;
 }
 
 // moves block to the left
@@ -131,11 +135,9 @@ function moveBlockLeft() {
   blocksArray.forEach((block) => {
     const id = block.getAttribute("id");
     let classList = Array.from(blocks[id].classList);
-    console.log(classList);
     let leftBlock = blocks[id - 1];
     for (let j = 0; j < classList.length; j++) {
       if (classList[j] != "block") {
-        console.log(classList[j]);
         block.classList.remove(classList[j]);
         leftBlock.classList.add(classList[j]);
       }
