@@ -5,16 +5,30 @@
     margin: auto;
 }
 
+.spawn-zone {
+    position: relative;
+    width: 200px;
+    margin-left: 50px;
+    height: 80px;
+}
+
+.playing-space {
+    position: relative;
+    width: 200px;
+    margin-left: 49px;
+    height: 400px;
+    border: 1px solid black;
+}
 .board {
     position: relative;
     width: 200px;
-    height: 400px;
-    border: 1px solid black;
+    height: 480px;
     margin-left: 50px;
-    margin-top: 100px;
+    margin-top: -481px;
     display: flex;
     flex-wrap: wrap;
 }
+
 
 .block {
     width: 18px;
@@ -35,5 +49,51 @@
     width: 18px;
     height: 18px;
     background-color: red;
-    border: 1px solid rgba(173, 216, 230, 0.5);
+    border: 1px solid black;
+}
+
+.block-type-two{
+    width: 18px;
+    height: 18px;
+    background-color: green;
+    border: 1px solid black;
+}
+
+.block-type-three{
+    width: 18px;
+    height: 18px;
+    background-color: blue;
+    border: 1px solid black;
+}
+
+.block-type-four{
+    width: 18px;
+    height: 18px;
+    background-color: orange;
+    border: 1px solid black;
+}
+
+.block-type-five{
+    width: 18px;
+    height: 18px;
+    background-color: yellow;
+    border: 1px solid black;
+}
+
+.block-type-six{
+    width: 18px;
+    height: 18px;
+    background-color: pink;
+    border: 1px solid black;
+}
+
+.block-type-seven{
+    width: 18px;
+    height: 18px;
+    background-color: purple;
+    border: 1px solid black;
+}
+
+.spawn {
+    opacity: 0;
 }

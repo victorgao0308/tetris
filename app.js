@@ -1,10 +1,18 @@
 const board = document.querySelector(".board");
 const score = document.querySelector("#score");
+const pieces = ["square", "s", "z", "long", "l", "j", "t"];
 
 let timer;
 
 // create blocks
-for (let i = 0; i < 200; i++) {
+
+for (let i = 0; i < 40; i++) {
+    let block = document.createElement("div");
+    block.classList.add("block", "spawn");
+    block.setAttribute("id", i);
+    board.appendChild(block);
+}
+for (let i = 40; i < 240; i++) {
   let block = document.createElement("div");
   block.classList.add("block");
   block.setAttribute("id", i);
@@ -16,7 +24,7 @@ for (let i = 0; i < 10; i++) {
   let block = document.createElement("div");
   block.classList.add("block");
   block.classList.add("static");
-  block.setAttribute("id", i + 200);
+  block.setAttribute("id", i + 240);
   board.appendChild(block);
 }
 
@@ -31,18 +39,66 @@ function spawnPiece(type) {
     blocks[14].classList.add("block-type-one", "in-play");
     blocks[15].classList.add("block-type-one", "in-play");
   }
+
+  // create an s-shape
+  if (type === "s") {
+    blocks[5].classList.add("block-type-two", "in-play");
+    blocks[6].classList.add("block-type-two", "in-play");
+    blocks[14].classList.add("block-type-two", "in-play");
+    blocks[15].classList.add("block-type-two", "in-play");
+  }
+
+  // create a z-shape
+  if (type === "z") {
+    blocks[4].classList.add("block-type-three", "in-play");
+    blocks[5].classList.add("block-type-three", "in-play");
+    blocks[15].classList.add("block-type-three", "in-play");
+    blocks[16].classList.add("block-type-three", "in-play");
+  }
+
+  // create long shape
+  if (type === "long") {
+    blocks[3].classList.add("block-type-four", "in-play");
+    blocks[4].classList.add("block-type-four", "in-play");
+    blocks[5].classList.add("block-type-four", "in-play");
+    blocks[6].classList.add("block-type-four", "in-play");
+  }
+
+  // create a l-shape
+  if (type === "l") {
+    blocks[13].classList.add("block-type-five", "in-play");
+    blocks[14].classList.add("block-type-five", "in-play");
+    blocks[15].classList.add("block-type-five", "in-play");
+    blocks[5].classList.add("block-type-five", "in-play");
+  }
+
+  // create a j-shape
+  if (type === "j") {
+    blocks[3].classList.add("block-type-six", "in-play");
+    blocks[13].classList.add("block-type-six", "in-play");
+    blocks[14].classList.add("block-type-six", "in-play");
+    blocks[15].classList.add("block-type-six", "in-play");
+  }
+
+  // create a t-shape
+  if (type === "t") {
+    blocks[3].classList.add("block-type-seven", "in-play");
+    blocks[4].classList.add("block-type-seven", "in-play");
+    blocks[5].classList.add("block-type-seven", "in-play");
+    blocks[14].classList.add("block-type-seven", "in-play");
+  }
 }
 
 // move the blocks in play down
 function moveBlocks() {
-  checkCollisionsDown();
   gameOver();
+  checkCollisionsDown();
   for (let i = blocks.length - 1; i >= 0; i--) {
     if (blocks[i].classList.contains("in-play")) {
       let classes = Array.from(blocks[i].classList);
       let nextBlock = i + 10;
       for (let j = 0; j < classes.length; j++) {
-        if (classes[j] !== "block") {
+        if (classes[j] !== "block" && classes[j] != "spawn") {
           blocks[i].classList.remove(classes[j]);
           blocks[nextBlock].classList.add(classes[j]);
         }
@@ -61,15 +117,15 @@ function checkCollisionsDown() {
     let id = blocksArray[i].getAttribute("id");
     let bottomBlock = parseInt(id) + 10;
 
-    if (bottomBlock < 210) {
+    if (bottomBlock < 250) {
       if (blocks[bottomBlock].classList.contains("static")) {
         blocksInPlay.forEach((block) => {
           block.classList.add("static");
           block.classList.remove("in-play");
         });
-        // clearInterval(timer);
-        // timer = null;
-        spawnPiece("square");
+
+        // spawn another block
+        randomPiece();
         return true;
       }
     }
@@ -79,16 +135,13 @@ function checkCollisionsDown() {
 
 // check for game over
 function gameOver() {
-  if (
-    blocks[4].classList.contains("static") ||
-    blocks[5].classList.contains("static") ||
-    blocks[14].classList.contains("static") ||
-    blocks[15].classList.contains("static")
-  ) {
-    score.innerHTML = "Game Over!";
-    clearInterval(timer);
-    document.removeEventListener("keyup", userMoveBlock);
-    timer = null;
+  for (let i = 30; i < 40; i++) {
+    if (blocks[i].classList.contains("static")) {
+      score.innerHTML = "Game Over!";
+      clearInterval(timer);
+      document.removeEventListener("keyup", userMoveBlock);
+      timer = null;
+    }
   }
 }
 
@@ -152,38 +205,15 @@ function checkCollisionsRight(blocksArray) {
 
 // moves block to the left
 function moveBlockLeft(blocksArray) {
-    let newBlocks = [];
-    let classes = new Set();
-    blocksArray.forEach((block) => {
-      let id = parseInt(block.getAttribute("id"));
-      let classList = Array.from(blocks[id].classList);
-      let leftBlock = blocks[id - 1];
-      newBlocks.push(leftBlock);
-      for (let j = 0; j < classList.length; j++) {
-        if (classList[j] != "block") {
-          block.classList.remove(classList[j]);
-          classes.add(classList[j]);
-        }
-      }
-    });
-    newBlocks.forEach((block) => {
-      for (const c of classes) {
-        block.classList.add(c);
-      }
-    });
-  }
-
-// move blocks to the right
-function moveBlockRight(blocksArray) {
   let newBlocks = [];
   let classes = new Set();
   blocksArray.forEach((block) => {
     let id = parseInt(block.getAttribute("id"));
     let classList = Array.from(blocks[id].classList);
-    let rightBlock = blocks[id + 1];
-    newBlocks.push(rightBlock);
+    let leftBlock = blocks[id - 1];
+    newBlocks.push(leftBlock);
     for (let j = 0; j < classList.length; j++) {
-      if (classList[j] != "block") {
+      if (classList[j] != "block" && classList[j] != "spawn") {
         block.classList.remove(classList[j]);
         classes.add(classList[j]);
       }
@@ -196,7 +226,36 @@ function moveBlockRight(blocksArray) {
   });
 }
 
+// move blocks to the right
+function moveBlockRight(blocksArray) {
+  let newBlocks = [];
+  let classes = new Set();
+  blocksArray.forEach((block) => {
+    let id = parseInt(block.getAttribute("id"));
+    let classList = Array.from(blocks[id].classList);
+    let rightBlock = blocks[id + 1];
+    newBlocks.push(rightBlock);
+    for (let j = 0; j < classList.length; j++) {
+      if (classList[j] != "block" && classList[j] != "spawn") {
+        block.classList.remove(classList[j]);
+        classes.add(classList[j]);
+      }
+    }
+  });
+  newBlocks.forEach((block) => {
+    for (const c of classes) {
+      block.classList.add(c);
+    }
+  });
+}
+
+// gets a random piece and calls the function to spawn it
+function randomPiece() {
+  const randNum = Math.floor(Math.random() * pieces.length);
+  spawnPiece(pieces[randNum]);
+}
+
 document.addEventListener("keyup", userMoveBlock);
 
-spawnPiece("square");
-timer = setInterval(moveBlocks, 100);
+randomPiece("s-right");
+timer = setInterval(moveBlocks, 75);
