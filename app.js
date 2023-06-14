@@ -1,16 +1,20 @@
 const board = document.querySelector(".board");
 const score = document.querySelector("#score");
-const pieces = ["square", "s", "z", "long", "l", "j", "t"];
+//const pieces = ["square", "s", "z", "long", "l", "j", "t"];
+const pieces = ["s"];
 
 let timer;
+
+// keep track of which rotation state a block is in
+let orient = 1;
 
 // create blocks
 
 for (let i = 0; i < 40; i++) {
-    let block = document.createElement("div");
-    block.classList.add("block", "spawn");
-    block.setAttribute("id", i);
-    board.appendChild(block);
+  let block = document.createElement("div");
+  block.classList.add("block", "spawn");
+  block.setAttribute("id", i);
+  board.appendChild(block);
 }
 for (let i = 40; i < 240; i++) {
   let block = document.createElement("div");
@@ -22,8 +26,7 @@ for (let i = 40; i < 240; i++) {
 // hidden row of blocks at the bottom, to help detect collisions
 for (let i = 0; i < 10; i++) {
   let block = document.createElement("div");
-  block.classList.add("block");
-  block.classList.add("static");
+  block.classList.add("block", "static", "bottom");
   block.setAttribute("id", i + 240);
   board.appendChild(block);
 }
@@ -87,6 +90,9 @@ function spawnPiece(type) {
     blocks[5].classList.add("block-type-seven", "in-play");
     blocks[14].classList.add("block-type-seven", "in-play");
   }
+
+  // orientation of a block is 1 by default
+  orient = 1;
 }
 
 // move the blocks in play down
@@ -162,7 +168,7 @@ function userMoveBlock(e) {
       }
       break;
     case "ArrowUp":
-      console.log("rotate block");
+      rotate(blocksArray);
       break;
     case "ArrowDown":
       console.log("move block down");
@@ -249,6 +255,114 @@ function moveBlockRight(blocksArray) {
   });
 }
 
+// rotates a piece
+function rotate(blocksArray) {
+  if (blocksArray.length == 0) {
+    return;
+  }
+
+  const classes = Array.from(blocksArray[0].classList);
+
+  let piece;
+  for (let i = 0; i < classes.length; i++) {
+    if (
+      classes[i] !== "block" &&
+      classes[i] !== "spawn" &&
+      classes[i] !== "in-play"
+    ) {
+      piece = classes[i];
+    }
+  }
+
+  // can't rotate a square
+  if (piece === "block-type-one") {
+    return;
+  }
+
+  // rotate s piece
+  if (piece === "block-type-two") {
+    let canRotate = RotateS(blocksArray);
+    if (canRotate) {
+      // change the orientation state if rotation was successful
+      if (orient == 1) {
+        orient = 2;
+      } else {
+        orient = 1;
+      }
+    }
+  }
+}
+
+// attempt to rotate the "s" piece
+function RotateS(blocksArray) {
+  // anchor of the piece
+  let anchor = blocksArray[0];
+  let id = anchor.getAttribute("id");
+
+  // first orientation
+  if (orient == 1) {
+    // check if we can rotate
+    let blockOne = parseInt(id) - 10;
+    let blockTwo = parseInt(id) + 11;
+
+    // can't rotate
+    if (
+      blockOne < 0 ||
+      blockTwo < 0 ||
+      blockOne > 239 ||
+      blockTwo > 239 ||
+      blocks[blockOne].classList.contains("static") ||
+      blocks[blockTwo].classList.contains("static")
+    ) {
+      return false;
+    }
+
+    // can rotate
+    let originalOne = parseInt(id) + 9;
+    let originalTwo = parseInt(id) + 10;
+
+    // rotate
+    blocks[originalOne].classList.remove("block-type-two", "in-play");
+    blocks[originalTwo].classList.remove("block-type-two", "in-play");
+    blocks[blockOne].classList.add("block-type-two", "in-play");
+    blocks[blockTwo].classList.add("block-type-two", "in-play");
+
+    return true;
+  }
+
+  // second orientation
+  if (orient == 2) {
+    // check if we can rotate
+    let blockOne = parseInt(id) + 19;
+    let blockTwo = parseInt(id) + 20;
+
+    // can't rotate
+    if (
+      id % 10 == 0 ||
+      blockOne < 0 ||
+      blockTwo < 0 ||
+      blockOne > 239 ||
+      blockTwo > 239 ||
+      blocks[blockOne].classList.contains("static") ||
+      blocks[blockTwo].classList.contains("static")
+    ) {
+      return false;
+    }
+
+    // can rotate
+    let originalOne = parseInt(id);
+    let originalTwo = parseInt(id) + 21;
+
+    // rotate
+    blocks[originalOne].classList.remove("block-type-two", "in-play");
+    blocks[originalTwo].classList.remove("block-type-two", "in-play");
+    blocks[blockOne].classList.add("block-type-two", "in-play");
+    blocks[blockTwo].classList.add("block-type-two", "in-play");
+
+    return true;
+  }
+}
+
 // gets a random piece and calls the function to spawn it
 function randomPiece() {
   const randNum = Math.floor(Math.random() * pieces.length);
@@ -258,4 +372,4 @@ function randomPiece() {
 document.addEventListener("keyup", userMoveBlock);
 
 randomPiece("s-right");
-timer = setInterval(moveBlocks, 75);
+timer = setInterval(moveBlocks, 300);
