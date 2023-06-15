@@ -1,6 +1,6 @@
 body {
     background: linear-gradient(-45deg, rgba(82, 237, 193, 0.5), rgba(232, 229, 61, 0.5), rgba(71, 245, 117, 0.5), rgba(35, 177, 213, 0.5));
-    background-size: 400% 400%;
+    background-size: 400%;
     animation: gradient 60s ease infinite;
     height: 90vh;
 }
@@ -31,6 +31,7 @@ h2, h3, button {
   margin-top: 25px;
   background: transparent;
   z-index: 1;
+  text-align: center;
 }
 
 .spawn-zone {

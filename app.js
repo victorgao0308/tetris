@@ -9,6 +9,7 @@ const scoreText = document.querySelector(".score-txt");
 const levelText = document.querySelector(".level-txt");
 const gameOverMenu = document.querySelector(".game-over");
 const finalScore = document.querySelector(".final-score");
+const playAgain = document.querySelector(".play-again");
 
 const pieces = ["square", "s", "z", "long", "l", "j", "t"];
 
@@ -164,6 +165,7 @@ function gameOver() {
       document.removeEventListener("keyup", userMoveBlock);
       timer = null;
       gameOverMenu.classList.remove("hide-game-over");
+      playAgain.addEventListener("click", again);
       finalScore.textContent = playerScore;
     }
   }
@@ -977,7 +979,9 @@ function randomPiece() {
 }
 
 // start the game
-startBtn.addEventListener("click", () => {
+startBtn.addEventListener("click", startGame);
+
+function startGame() {
   startMenu.classList.add("hide-menu");
   gameContainer.classList.remove("hide-border");
   playingSpace.classList.remove("hide-border");
@@ -985,6 +989,24 @@ startBtn.addEventListener("click", () => {
   levelText.classList.remove("hide-txt");
   randomPiece();
   timer = setInterval(moveBlocks, interval);
-});
+  startBtn.removeEventListener("click", startGame);
+}
+
+// clear the board of all pieces and start game again
+function again() {
+  for (let i = 239; i >= 40; i--) {
+    blocks[i].className = "block";
+  }
+  for (let i = 0; i < 40; i++) {
+    blocks[i].className = "block spawn";
+  }
+  randomPiece();
+  timer = setInterval(moveBlocks, interval);
+  gameOverMenu.classList.add("hide-game-over");
+  playerScore = 0;
+  level = 1;
+  score.textContent = playerScore;
+  level.textContent = level;
+}
 
 document.addEventListener("keydown", userMoveBlock);
