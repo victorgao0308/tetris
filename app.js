@@ -438,17 +438,34 @@ function RotateS(blocksArray) {
     let blockOne = id + 11;
     let blockTwo = id + 21;
 
-    // can't rotate
+    // try kicking from the bottom
     if (
       blockOne < 0 ||
       blockTwo > 239 ||
       blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static")
     ) {
-      return false;
-    }
+      let newOne = id - 10;
+      let newTwo = id + 11;
 
-    // TODO: wall kick top/bottom
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id + 10;
+      let originalTwo = id + 9;
+
+      blocks[originalOne].classList.remove("block-type-two", "in-play");
+      blocks[originalTwo].classList.remove("block-type-two", "in-play");
+      blocks[newOne].classList.add("block-type-two", "in-play");
+      blocks[newTwo].classList.add("block-type-two", "in-play");
+      return true;
+    }
 
     // can rotate
     let originalOne = id + 1;
@@ -468,7 +485,7 @@ function RotateS(blocksArray) {
     let blockOne = id + 20;
     let blockTwo = id + 19;
 
-    // can't rotate
+    // try wall kicking left
     if (
       id % 10 == 0 ||
       blockOne < 0 ||
@@ -476,10 +493,27 @@ function RotateS(blocksArray) {
       blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static")
     ) {
-      return false;
-    }
+      let newOne = id + 12;
+      let newTwo = id + 20;
 
-    // TODO: wall kick left/right
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 10;
+
+      blocks[originalOne].classList.remove("block-type-two", "in-play");
+      blocks[originalTwo].classList.remove("block-type-two", "in-play");
+      blocks[newOne].classList.add("block-type-two", "in-play");
+      blocks[newTwo].classList.add("block-type-two", "in-play");
+      return true;
+    }
 
     // can rotate
     let originalOne = id;
@@ -498,18 +532,34 @@ function RotateS(blocksArray) {
     let blockOne = id - 11;
     let blockTwo = id - 1;
 
-    // can't rotate
+    // try kicking from the top
     if (
-      id % 10 == 0 ||
       blockOne < 0 ||
       blockTwo > 239 ||
       blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static")
     ) {
-      return false;
-    }
+      let newOne = id - 1;
+      let newTwo = id + 20;
 
-    // TODO: wall kick top/bottom
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 1;
+
+      blocks[originalOne].classList.remove("block-type-two", "in-play");
+      blocks[originalTwo].classList.remove("block-type-two", "in-play");
+      blocks[newOne].classList.add("block-type-two", "in-play");
+      blocks[newTwo].classList.add("block-type-two", "in-play");
+      return true;
+    }
 
     // can rotate
     let originalOne = id + 1;
@@ -528,18 +578,35 @@ function RotateS(blocksArray) {
     let blockOne = id + 1;
     let blockTwo = id + 2;
 
-    // can't rotate
+    // try wall kicking right
     if (
-      id % 10 == 0 ||
+      id % 10 >= 8 ||
       blockOne < 0 ||
       blockTwo > 239 ||
       blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static")
     ) {
-      return false;
-    }
+      let newOne = id + 1;
+      let newTwo = id + 9;
 
-    // TODO: wall kick left/right
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id + 11;
+      let originalTwo = id + 21;
+
+      blocks[originalOne].classList.remove("block-type-two", "in-play");
+      blocks[originalTwo].classList.remove("block-type-two", "in-play");
+      blocks[newOne].classList.add("block-type-two", "in-play");
+      blocks[newTwo].classList.add("block-type-two", "in-play");
+      return true;
+    }
 
     // can rotate
     let originalOne = id;
