@@ -8,10 +8,22 @@
 </head>
 <body>
 
-    <div class="game-container">
-        <h3>Score: <span id = "score"></span></h3>
-        <div class="spawn-zone"></div>
-        <div class="playing-space"></div>
+    <div class="game-container hide-border">
+        <div class="start-menu">
+            <h3>Tetris but it's Kinda Scuffed</h3>
+            <div class="btn-container">
+                <button class = "btn start">Start Game</button>
+            </div>
+        </div>
+        <div class="game-over hide-menu">
+            <h2>Game Over!</h2>
+            <h3>Score: <span class = "final-score"></span></h3>
+            <button class = "btn">Play Again</button>
+        </div>
+        <h3 class = "hide-txt score-txt">Score: <span id = "score">0</span></h3>
+        <h3 class = "hide-txt level-txt">Level: <span id = "level">1</span></h3>
+        <div class="spawn-zone" ></div>
+        <div class="playing-space hide-border"></div>
         <div class="board">
         </div>
     </div>

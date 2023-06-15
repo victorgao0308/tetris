@@ -1,8 +1,10 @@
 .game-container {
     border: 1px solid black;
+    border-radius: 15px;
     width: 400px;
     height: 600px;
     margin: auto;
+    margin-top: 25px;
 }
 
 .spawn-zone {
@@ -97,3 +99,90 @@
 .spawn {
     opacity: 0;
 }
+
+.start-menu {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    margin-left: 100px;
+    margin-top: 150px;
+    border: 1px solid rgb(118, 76, 12);
+    opacity : 1;
+    background: linear-gradient(rgba(255,235,205,1) 0%, rgba(236,190,156,1) 88%);
+    z-index: 3;
+    text-align: center;
+    box-shadow: rgba(255, 164, 26, 0.228) -25px 18px -14px inset,
+    rgba(255, 164, 26, 0.228) 0 1px 2px,rgba(255, 164, 26, 0.228)0 2px 4px,rgba(255, 164, 26, 0.228)
+    0 4px 8px,rgba(255, 164, 26, 0.228)0 8px 16px,rgba(255, 164, 26, 0.228)0 16px 32px;
+}
+
+.hide-border {
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+
+.score-txt {
+    opacity: 1;
+}
+.hide-txt {
+    opacity: 0.2;
+}
+
+.btn-container {
+    margin-top: 50px;
+}
+
+.btn {
+  background-color: #f37e6c;
+  border-radius: 100px;
+  box-shadow: rgba(158, 52, 38, 0.2) 0 -25px 18px -14px inset,rgba(158, 52, 38, 0.2)
+  0 1px 2px,rgba(158, 52, 38, 0.2) 0 2px 4px,rgba(158, 52, 38, 0.2) 0 4px 8px,rgba(158, 52, 38, 0.2)
+  0 8px 16px,rgba(158, 52, 38, 0.2) 0 16px 32px;
+  color: black;
+  cursor: pointer;
+  display: inline-block;
+  font-family: CerebriSans-Regular,Roboto,sans-serif;
+  padding: 7px 20px;
+  text-align: center;
+  text-decoration: none;
+  transition: all 250ms;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btn:hover {
+  transform: scale(1.05) rotate(-1deg);
+}
+
+.game-over {
+    position: absolute;
+    width: 200px;
+    height: 300px;
+    border-radius: 10px;
+    margin-left: 100px;
+    margin-top: 150px;
+    border: 1px solid rgb(118, 76, 12);
+    opacity : 1;
+    background: linear-gradient(rgba(255,235,205,1) 0%, rgba(236,190,156,1) 88%);
+    z-index: 3;
+    text-align: center;
+    box-shadow: rgba(255, 164, 26, 0.228) -25px 18px -14px inset,
+    rgba(255, 164, 26, 0.228) 0 1px 2px,rgba(255, 164, 26, 0.228)0 2px 4px,rgba(255, 164, 26, 0.228)
+    0 4px 8px,rgba(255, 164, 26, 0.228)0 8px 16px,rgba(255, 164, 26, 0.228)0 16px 32px;
+    visibility: visible;
+    opacity: 1;
+    transition: opacity 0.5s linear;
+}
+
+
+.hide-menu {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s linear;
+} 
+
+

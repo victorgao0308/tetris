@@ -1,11 +1,29 @@
 const board = document.querySelector(".board");
 const score = document.querySelector("#score");
+const curLevel = document.querySelector("#level");
+const startBtn = document.querySelector(".start");
+const startMenu = document.querySelector(".start-menu");
+const gameContainer = document.querySelector(".game-container");
+const playingSpace = document.querySelector(".playing-space");
+const scoreText = document.querySelector(".score-txt");
+const levelText = document.querySelector(".level-txt");
+const gameOverMenu = document.querySelector(".game-over");
+const finalScore = document.querySelector(".final-score");
+
 const pieces = ["square", "s", "z", "long", "l", "j", "t"];
 
 let timer;
+let playerScore = 0;
+let level = 1;
 
 // keep track of which rotation state a block is in
 let orient = 1;
+
+// dictates how fast the blocks fall
+let interval = 400;
+
+// score needed to level up
+let target = 40;
 
 // create blocks
 for (let i = 0; i < 40; i++) {
@@ -142,10 +160,11 @@ function checkCollisionsDown() {
 function gameOver() {
   for (let i = 30; i < 40; i++) {
     if (blocks[i].classList.contains("static")) {
-      score.innerHTML = "Game Over!";
       clearInterval(timer);
       document.removeEventListener("keyup", userMoveBlock);
       timer = null;
+      gameOverMenu.classList.remove("hide-menu");
+      finalScore.textContent = playerScore;
     }
   }
 }
@@ -190,6 +209,17 @@ function checkLineClears() {
     if (clear) {
       // move the blocks down
       clearRow(i);
+      playerScore += 10;
+      score.textContent = playerScore;
+      // level up
+      if (playerScore >= target) {
+        level += 1;
+        curLevel.textContent = level;
+        target += 40;
+        interval -= 40;
+        clearInterval(timer);
+        timer = setInterval(moveBlocks, interval);
+      }
     }
   }
 }
@@ -848,6 +878,7 @@ function RotateJ(blocksArray) {
   }
 }
 
+// attempt to rotate the "t" piece
 function RotateT(blocksArray) {
   // anchor of the piece
   let anchor = blocksArray[0];
@@ -945,7 +976,15 @@ function randomPiece() {
   spawnPiece(pieces[randNum]);
 }
 
-document.addEventListener("keydown", userMoveBlock);
+// start the game
+startBtn.addEventListener("click", () => {
+  startMenu.classList.add("hide-menu");
+  gameContainer.classList.remove("hide-border");
+  playingSpace.classList.remove("hide-border");
+  scoreText.classList.remove("hide-txt");
+  levelText.classList.remove("hide-txt");
+  randomPiece();
+  timer = setInterval(moveBlocks, interval);
+});
 
-randomPiece();
-timer = setInterval(moveBlocks, 250);
+document.addEventListener("keydown", userMoveBlock);
