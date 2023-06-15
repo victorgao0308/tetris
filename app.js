@@ -11,8 +11,7 @@ const gameOverMenu = document.querySelector(".game-over");
 const finalScore = document.querySelector(".final-score");
 const playAgain = document.querySelector(".play-again");
 
-// const pieces = ["square", "s", "z", "long", "l", "j", "t"];
-const pieces = ["j"];
+const pieces = ["square", "s", "z", "long", "l", "j", "t"];
 
 let timer;
 let playerScore = 0;
@@ -22,7 +21,7 @@ let level = 1;
 let orient = 1;
 
 // dictates how fast the blocks fall
-let interval = 400000;
+let interval = 400;
 
 // score needed to level up
 let target = 40;
@@ -1628,13 +1627,32 @@ function RotateT(blocksArray) {
   if (orient == 1) {
     let blockOne = id - 9;
 
-    // can't rotate
+    // try to kick off the top
     if (
       blockOne < 0 ||
       blockOne > 239 ||
       blocks[blockOne].classList.contains("static")
     ) {
-      return false;
+      let newOne = id + 10;
+      let newTwo = id + 21;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 2;
+
+      blocks[originalOne].classList.remove("block-type-seven", "in-play");
+      blocks[originalTwo].classList.remove("block-type-seven", "in-play");
+      blocks[newOne].classList.add("block-type-seven", "in-play");
+      blocks[newTwo].classList.add("block-type-seven", "in-play");
+      return true;
     }
 
     // can rotate
@@ -1649,14 +1667,33 @@ function RotateT(blocksArray) {
   if (orient == 2) {
     let blockOne = id + 11;
 
-    // can't rotate
+    // try to kick off the right
     if (
       id % 10 == 9 ||
       blockOne < 0 ||
       blockOne > 239 ||
       blocks[blockOne].classList.contains("static")
     ) {
-      return false;
+      let newOne = id - 1;
+      let newTwo = id + 8;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 20;
+
+      blocks[originalOne].classList.remove("block-type-seven", "in-play");
+      blocks[originalTwo].classList.remove("block-type-seven", "in-play");
+      blocks[newOne].classList.add("block-type-seven", "in-play");
+      blocks[newTwo].classList.add("block-type-seven", "in-play");
+      return true;
     }
 
     // can rotate
@@ -1671,13 +1708,32 @@ function RotateT(blocksArray) {
   if (orient == 3) {
     let blockOne = id + 20;
 
-    // can't rotate
+    // try to kick off the bottom
     if (
       blockOne < 0 ||
       blockOne > 239 ||
       blocks[blockOne].classList.contains("static")
     ) {
-      return false;
+      let newOne = id - 10;
+      let newTwo = id + 1;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id + 9;
+      let originalTwo = id + 11;
+
+      blocks[originalOne].classList.remove("block-type-seven", "in-play");
+      blocks[originalTwo].classList.remove("block-type-seven", "in-play");
+      blocks[newOne].classList.add("block-type-seven", "in-play");
+      blocks[newTwo].classList.add("block-type-seven", "in-play");
+      return true;
     }
 
     // can rotate
@@ -1692,14 +1748,33 @@ function RotateT(blocksArray) {
   if (orient == 4) {
     let blockOne = id + 9;
 
-    // can't rotate
+    // try to kick off the left
     if (
       id % 10 == 0 ||
       blockOne < 0 ||
       blockOne > 239 ||
       blocks[blockOne].classList.contains("static")
     ) {
-      return false;
+      let newOne = id + 12;
+      let newTwo = id + 21;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 20;
+
+      blocks[originalOne].classList.remove("block-type-seven", "in-play");
+      blocks[originalTwo].classList.remove("block-type-seven", "in-play");
+      blocks[newOne].classList.add("block-type-seven", "in-play");
+      blocks[newTwo].classList.add("block-type-seven", "in-play");
+      return true;
     }
 
     // can rotate
