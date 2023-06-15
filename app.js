@@ -12,7 +12,7 @@ const finalScore = document.querySelector(".final-score");
 const playAgain = document.querySelector(".play-again");
 
 // const pieces = ["square", "s", "z", "long", "l", "j", "t"];
-const pieces = ["s"];
+const pieces = ["z"];
 
 let timer;
 let playerScore = 0;
@@ -355,7 +355,6 @@ function rotate(blocksArray) {
     if (canRotate) {
       // change the orientation state if rotation was successful
       if (canRotate) {
-        // change the orientation state if rotation was successful
         orient += 1;
         if (orient == 5) {
           orient = 1;
@@ -369,10 +368,11 @@ function rotate(blocksArray) {
     let canRotate = RotateZ(blocksArray);
     if (canRotate) {
       // change the orientation state if rotation was successful
-      if (orient == 1) {
-        orient = 2;
-      } else {
-        orient = 1;
+      if (canRotate) {
+        orient += 1;
+        if (orient == 5) {
+          orient = 1;
+        }
       }
     }
   }
@@ -629,24 +629,41 @@ function RotateZ(blocksArray) {
 
   // first orientation
   if (orient == 1) {
-    let blockOne = id - 8;
-    let blockTwo = id + 2;
+    let blockOne = id + 2;
+    let blockTwo = id + 21;
 
-    // can't rotate
+    // try wall kicking from the bottom
     if (
       blockOne < 0 ||
-      blockTwo < 0 ||
-      blockOne > 239 ||
       blockTwo > 239 ||
       blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static")
     ) {
-      return false;
+      let newOne = id - 8;
+      let newTwo = id + 2;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 12;
+
+      blocks[originalOne].classList.remove("block-type-three", "in-play");
+      blocks[originalTwo].classList.remove("block-type-three", "in-play");
+      blocks[newOne].classList.add("block-type-three", "in-play");
+      blocks[newTwo].classList.add("block-type-three", "in-play");
+      return true;
     }
 
     // can rotate
     let originalOne = id;
-    let originalTwo = id + 12;
+    let originalTwo = id + 1;
 
     // rotate
     blocks[originalOne].classList.remove("block-type-three", "in-play");
@@ -662,22 +679,132 @@ function RotateZ(blocksArray) {
     let blockOne = id + 8;
     let blockTwo = id + 20;
 
-    // can't rotate
+    // try wall kicking left
     if (
       id % 10 <= 1 ||
       blockOne < 0 ||
-      blockTwo < 0 ||
-      blockOne > 239 ||
       blockTwo > 239 ||
       blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static")
     ) {
-      return false;
+      let newOne = id + 20;
+      let newTwo = id + 21;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 19;
+
+      blocks[originalOne].classList.remove("block-type-three", "in-play");
+      blocks[originalTwo].classList.remove("block-type-three", "in-play");
+      blocks[newOne].classList.add("block-type-three", "in-play");
+      blocks[newTwo].classList.add("block-type-three", "in-play");
+      return true;
     }
 
     // can rotate
     let originalOne = id;
     let originalTwo = id + 10;
+
+    // rotate
+    blocks[originalOne].classList.remove("block-type-three", "in-play");
+    blocks[originalTwo].classList.remove("block-type-three", "in-play");
+    blocks[blockOne].classList.add("block-type-three", "in-play");
+    blocks[blockTwo].classList.add("block-type-three", "in-play");
+    return true;
+  }
+
+  // third orientation
+  if (orient == 3) {
+    let blockOne = id - 9;
+    let blockTwo = id + 10;
+
+    // try wall kicking from the top
+    if (
+      blockOne < 0 ||
+      blockTwo > 239 ||
+      blocks[blockOne].classList.contains("static") ||
+      blocks[blockTwo].classList.contains("static")
+    ) {
+      let newOne = id + 10;
+      let newTwo = id + 20;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 12;
+
+      blocks[originalOne].classList.remove("block-type-three", "in-play");
+      blocks[originalTwo].classList.remove("block-type-three", "in-play");
+      blocks[newOne].classList.add("block-type-three", "in-play");
+      blocks[newTwo].classList.add("block-type-three", "in-play");
+      return true;
+    }
+
+    // can rotate
+    let originalOne = id + 11;
+    let originalTwo = id + 12;
+
+    // rotate
+    blocks[originalOne].classList.remove("block-type-three", "in-play");
+    blocks[originalTwo].classList.remove("block-type-three", "in-play");
+    blocks[blockOne].classList.add("block-type-three", "in-play");
+    blocks[blockTwo].classList.add("block-type-three", "in-play");
+    return true;
+  }
+
+  // fourth orientation
+  if (orient == 4) {
+    let blockOne = id - 1;
+    let blockTwo = id + 11;
+
+    // try wall kicking from the right
+    if (
+      id % 10 == 9 ||
+      blockOne < 0 ||
+      blockTwo > 239 ||
+      blocks[blockOne].classList.contains("static") ||
+      blocks[blockTwo].classList.contains("static")
+    ) {
+      let newOne = id - 1;
+      let newTwo = id - 2;
+
+      if (
+        newOne < 0 ||
+        newTwo > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 19;
+
+      blocks[originalOne].classList.remove("block-type-three", "in-play");
+      blocks[originalTwo].classList.remove("block-type-three", "in-play");
+      blocks[newOne].classList.add("block-type-three", "in-play");
+      blocks[newTwo].classList.add("block-type-three", "in-play");
+      return true;
+    }
+
+    // can rotate
+    let originalOne = id + 9;
+    let originalTwo = id + 19;
 
     // rotate
     blocks[originalOne].classList.remove("block-type-three", "in-play");
