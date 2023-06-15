@@ -12,7 +12,7 @@ const finalScore = document.querySelector(".final-score");
 const playAgain = document.querySelector(".play-again");
 
 // const pieces = ["square", "s", "z", "long", "l", "j", "t"];
-const pieces = ["z"];
+const pieces = ["long"];
 
 let timer;
 let playerScore = 0;
@@ -382,10 +382,11 @@ function rotate(blocksArray) {
     let canRotate = RotateLong(blocksArray);
     if (canRotate) {
       // change the orientation state if rotation was successful
-      if (orient == 1) {
-        orient = 2;
-      } else {
-        orient = 1;
+      if (canRotate) {
+        orient += 1;
+        if (orient == 5) {
+          orient = 1;
+        }
       }
     }
   }
@@ -823,19 +824,75 @@ function RotateLong(blocksArray) {
 
   // first orientation
   if (orient == 1) {
-    let blockOne = id - 18;
-    let blockTwo = id - 8;
-    let blockThree = id + 12;
+    let blockOne = id - 8;
+    let blockTwo = id + 12;
+    let blockThree = id + 22;
 
-    // can't rotate
+    // try to kick from the bottom
     if (
       blockOne < 0 ||
       blockThree > 239 ||
-      blocks[blockOne].classList.contains("static") ||
       blocks[blockTwo].classList.contains("static") ||
       blocks[blockThree].classList.contains("static")
     ) {
-      return false;
+      let newOne = id - 28;
+      let newTwo = id - 18;
+      let newThree = id - 8;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 1;
+      let originalThree = id + 3;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
+    }
+
+    // try to kick from the top
+    else if (
+      blockOne < 0 ||
+      blockThree > 239 ||
+      blocks[blockOne].classList.contains("static")
+    ) {
+      let newOne = id + 12;
+      let newTwo = id + 22;
+      let newThree = id + 32;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 1;
+      let originalThree = id + 3;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
     }
 
     // can rotate
@@ -853,29 +910,262 @@ function RotateLong(blocksArray) {
     return true;
   }
 
-  // other orientation
-
+  // second orientation
   if (orient == 2) {
     let blockOne = id + 18;
     let blockTwo = id + 19;
     let blockThree = id + 21;
 
-    // can't rotate
+    // try to kick from left
     if (
       id % 10 <= 1 ||
-      id % 10 >= 9 ||
       blockOne < 0 ||
       blockThree > 239 ||
       blocks[blockOne].classList.contains("static") ||
-      blocks[blockTwo].classList.contains("static") ||
+      blocks[blockTwo].classList.contains("static")
+    ) {
+      let newOne = id + 21;
+      let newTwo = id + 22;
+      let newThree = id + 23;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 10;
+      let originalThree = id + 30;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
+    }
+
+    // try to kick from the right
+    else if (
+      blockOne < 0 ||
+      blockThree > 239 ||
+      id % 10 == 9 ||
       blocks[blockThree].classList.contains("static")
     ) {
-      return false;
+      let newOne = id + 17;
+      let newTwo = id + 18;
+      let newThree = id + 19;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 10;
+      let originalThree = id + 30;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
     }
 
     // can rotate
     let originalOne = id;
     let originalTwo = id + 10;
+    let originalThree = id + 30;
+
+    // rotate
+    blocks[originalOne].classList.remove("block-type-four", "in-play");
+    blocks[originalTwo].classList.remove("block-type-four", "in-play");
+    blocks[originalThree].classList.remove("block-type-four", "in-play");
+    blocks[blockOne].classList.add("block-type-four", "in-play");
+    blocks[blockTwo].classList.add("block-type-four", "in-play");
+    blocks[blockThree].classList.add("block-type-four", "in-play");
+    return true;
+  }
+
+  // third orientation
+  if (orient == 3) {
+    let blockOne = id - 19;
+    let blockTwo = id - 9;
+    let blockThree = id + 11;
+
+    // try to kick from the bottom
+    if (
+      blockOne < 0 ||
+      blockThree > 239 ||
+      blocks[blockThree].classList.contains("static")
+    ) {
+      let newOne = id - 29;
+      let newTwo = id - 19;
+      let newThree = id - 9;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 2;
+      let originalThree = id + 3;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
+    }
+
+    // try to kick from the top
+    else if (
+      blockOne < 0 ||
+      blockThree > 239 ||
+      blocks[blockOne].classList.contains("static") ||
+      blocks[blockTwo].classList.contains("static")
+    ) {
+      let newOne = id + 11;
+      let newTwo = id + 21;
+      let newThree = id + 31;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 2;
+      let originalThree = id + 3;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
+    }
+
+    // can rotate
+    let originalOne = id;
+    let originalTwo = id + 2;
+    let originalThree = id + 3;
+
+    // rotate
+    blocks[originalOne].classList.remove("block-type-four", "in-play");
+    blocks[originalTwo].classList.remove("block-type-four", "in-play");
+    blocks[originalThree].classList.remove("block-type-four", "in-play");
+    blocks[blockOne].classList.add("block-type-four", "in-play");
+    blocks[blockTwo].classList.add("block-type-four", "in-play");
+    blocks[blockThree].classList.add("block-type-four", "in-play");
+    return true;
+  }
+
+  // fourth orientation
+  if (orient == 4) {
+    let blockOne = id + 9;
+    let blockTwo = id + 11;
+    let blockThree = id + 12;
+
+    // try to kick from left
+    if (
+      id % 10 == 0 ||
+      blockOne < 0 ||
+      blockThree > 239 ||
+      blocks[blockOne].classList.contains("static")
+    ) {
+      let newOne = id + 11;
+      let newTwo = id + 12;
+      let newThree = id + 13;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 20;
+      let originalThree = id + 30;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
+    }
+
+    // try to kick from the right
+    else if (
+      blockOne < 0 ||
+      blockThree > 239 ||
+      id % 10 >= 8 ||
+      blocks[blockTwo].classList.contains("static") ||
+      blocks[blockThree].classList.contains("static")
+    ) {
+      let newOne = id + 7;
+      let newTwo = id + 8;
+      let newThree = id + 9;
+
+      if (
+        newOne < 0 ||
+        newThree > 239 ||
+        blocks[newOne].classList.contains("static") ||
+        blocks[newTwo].classList.contains("static") ||
+        blocks[newThree].classList.contains("static")
+      ) {
+        return false;
+      }
+
+      let originalOne = id;
+      let originalTwo = id + 20;
+      let originalThree = id + 30;
+
+      blocks[originalOne].classList.remove("block-type-four", "in-play");
+      blocks[originalTwo].classList.remove("block-type-four", "in-play");
+      blocks[originalThree].classList.remove("block-type-four", "in-play");
+      blocks[newOne].classList.add("block-type-four", "in-play");
+      blocks[newTwo].classList.add("block-type-four", "in-play");
+      blocks[newThree].classList.add("block-type-four", "in-play");
+      return true;
+    }
+
+    // can rotate
+    let originalOne = id;
+    let originalTwo = id + 20;
     let originalThree = id + 30;
 
     // rotate
