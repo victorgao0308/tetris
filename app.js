@@ -163,7 +163,7 @@ function gameOver() {
       clearInterval(timer);
       document.removeEventListener("keyup", userMoveBlock);
       timer = null;
-      gameOverMenu.classList.remove("hide-menu");
+      gameOverMenu.classList.remove("hide-game-over");
       finalScore.textContent = playerScore;
     }
   }

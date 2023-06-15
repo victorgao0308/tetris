@@ -1,33 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tetris</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="game-container hide-border">
-        <div class="start-menu">
-            <h3>Tetris but it's Kinda Scuffed</h3>
-            <div class="btn-container">
-                <button class = "btn start">Start Game</button>
-            </div>
+      <div class="start-menu">
+        <h3>Tetris but it's Kinda Scuffed</h3>
+        <div class="btn-container">
+          <button class="btn start">Start Game</button>
         </div>
-        <div class="game-over hide-menu">
-            <h2>Game Over!</h2>
-            <h3>Score: <span class = "final-score"></span></h3>
-            <button class = "btn">Play Again</button>
-        </div>
-        <h3 class = "hide-txt score-txt">Score: <span id = "score">0</span></h3>
-        <h3 class = "hide-txt level-txt">Level: <span id = "level">1</span></h3>
-        <div class="spawn-zone" ></div>
-        <div class="playing-space hide-border"></div>
-        <div class="board">
-        </div>
+      </div>
+      <div class="game-over hide-game-over">
+        <h2>Game Over!</h2>
+        <h3>Score: <span class="final-score"></span></h3>
+        <button class="btn">Play Again</button>
+      </div>
+      <h3 class="hide-txt score-txt">Score: <span id="score">0</span></h3>
+      <h3 class="hide-txt level-txt">Level: <span id="level">1</span></h3>
+      <div class="spawn-zone"></div>
+      <div class="playing-space hide-border"></div>
+      <div class="board"></div>
     </div>
-    
-    <script src = "app.js"></script>
-</body>
+
+    <script src="app.js"></script>
+  </body>
 </html>
