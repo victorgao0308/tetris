@@ -10,6 +10,8 @@ const levelText = document.querySelector(".level-txt");
 const gameOverMenu = document.querySelector(".game-over");
 const finalScore = document.querySelector(".final-score");
 const playAgain = document.querySelector(".play-again");
+const pauseMenu = document.querySelector(".pause-menu");
+const resumeBtn = document.querySelector(".resume-btn");
 
 const pieces = ["square", "s", "z", "long", "l", "j", "t"];
 
@@ -192,6 +194,18 @@ function userMoveBlock(e) {
       break;
     case "ArrowDown":
       moveBlocks();
+      break;
+
+    // pause
+    case "p":
+      pauseMenu.classList.remove("hide-pause");
+      clearInterval(timer);
+      document.removeEventListener("keydown", userMoveBlock);
+      resumeBtn.addEventListener("click", resume);
+      gameContainer.classList.add("hide-border");
+      playingSpace.classList.add("hide-thin-border");
+      scoreText.classList.add("hide-txt");
+      levelText.classList.add("hide-txt");
       break;
   }
 }
@@ -1797,12 +1811,13 @@ startBtn.addEventListener("click", startGame);
 function startGame() {
   startMenu.classList.add("hide-menu");
   gameContainer.classList.remove("hide-border");
-  playingSpace.classList.remove("hide-border");
+  playingSpace.classList.remove("hide-thin-border");
   scoreText.classList.remove("hide-txt");
   levelText.classList.remove("hide-txt");
   randomPiece();
   timer = setInterval(moveBlocks, interval);
   startBtn.removeEventListener("click", startGame);
+  document.addEventListener("keydown", userMoveBlock);
 }
 
 // clear the board of all pieces and start game again
@@ -1822,4 +1837,14 @@ function again() {
   curLevel.textContent = level;
 }
 
-document.addEventListener("keydown", userMoveBlock);
+// continue the game after pausing
+function resume() {
+  timer = setInterval(moveBlocks, interval);
+  pauseMenu.classList.add("hide-pause");
+  document.addEventListener("keydown", userMoveBlock);
+  resumeBtn.removeEventListener("click", resume);
+  gameContainer.classList.remove("hide-border");
+  playingSpace.classList.remove("hide-thin-border");
+  scoreText.classList.remove("hide-txt");
+  levelText.classList.remove("hide-txt");
+}
