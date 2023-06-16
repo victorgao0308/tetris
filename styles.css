@@ -62,6 +62,10 @@ h2, h3, button {
   z-index: 3;
 }
 
+.hard {
+  filter: blur(10px);
+}
+
 .block {
   width: 18px;
   height: 18px;
@@ -191,6 +195,9 @@ h2, h3, button {
   user-select: none;
   -webkit-user-select: none;
   touch-action: manipulation;
+  max-width: 150px;
+  max-height: 50px;
+  margin-top: 15px;
 }
 
 .btn:hover {

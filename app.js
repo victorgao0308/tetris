@@ -12,12 +12,14 @@ const finalScore = document.querySelector(".final-score");
 const playAgain = document.querySelector(".play-again");
 const pauseMenu = document.querySelector(".pause-menu");
 const resumeBtn = document.querySelector(".resume-btn");
+const hardMode = document.querySelector(".hard-mode");
 
 const pieces = ["square", "s", "z", "long", "l", "j", "t"];
 
 let timer;
 let playerScore = 0;
 let level = 1;
+let hard = false;
 
 // keep track of which rotation state a block is in
 let orient = 1;
@@ -229,6 +231,9 @@ function checkLineClears() {
     if (clear) {
       // move the blocks down
       clearRow(i);
+      if (hard) {
+        playerScore += 5;
+      }
       playerScore += 10;
       score.textContent = playerScore;
       // level up
@@ -236,6 +241,9 @@ function checkLineClears() {
         level += 1;
         curLevel.textContent = level;
         target += 50;
+        if (hard) {
+          target += 25;
+        }
         interval -= 40;
         clearInterval(timer);
         timer = setInterval(moveBlocks, interval);
@@ -1811,6 +1819,7 @@ function randomPiece() {
 
 // start the game
 startBtn.addEventListener("click", startGame);
+hardMode.addEventListener("click", startGameHard);
 
 function startGame() {
   startMenu.classList.add("hide-menu");
@@ -1822,6 +1831,22 @@ function startGame() {
   timer = setInterval(moveBlocks, interval);
   startBtn.removeEventListener("click", startGame);
   document.addEventListener("keydown", userMoveBlock);
+}
+
+// hard mode
+function startGameHard() {
+  hard = true;
+  startMenu.classList.add("hide-menu");
+  gameContainer.classList.remove("hide-border");
+  playingSpace.classList.remove("hide-thin-border");
+  scoreText.classList.remove("hide-txt");
+  levelText.classList.remove("hide-txt");
+  randomPiece();
+  timer = setInterval(moveBlocks, interval);
+  startBtn.removeEventListener("click", startGame);
+  document.addEventListener("keydown", userMoveBlock);
+  board.classList.add("hard");
+  target = 75;
 }
 
 // clear the board of all pieces and start game again
