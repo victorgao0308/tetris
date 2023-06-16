@@ -26,7 +26,7 @@ let orient = 1;
 let interval = 400;
 
 // score needed to level up
-let target = 40;
+let target = 50;
 
 // create blocks
 for (let i = 0; i < 40; i++) {
@@ -169,6 +169,10 @@ function gameOver() {
       gameOverMenu.classList.remove("hide-game-over");
       playAgain.addEventListener("click", again);
       finalScore.textContent = playerScore;
+      gameContainer.classList.add("hide-border");
+      playingSpace.classList.add("hide-thin-border");
+      scoreText.classList.add("hide-txt");
+      levelText.classList.add("hide-txt");
     }
   }
 }
@@ -231,7 +235,7 @@ function checkLineClears() {
       if (playerScore >= target) {
         level += 1;
         curLevel.textContent = level;
-        target += 40;
+        target += 50;
         interval -= 40;
         clearInterval(timer);
         timer = setInterval(moveBlocks, interval);
@@ -1835,6 +1839,10 @@ function again() {
   level = 1;
   score.textContent = playerScore;
   curLevel.textContent = level;
+  gameContainer.classList.remove("hide-border");
+  playingSpace.classList.remove("hide-thin-border");
+  scoreText.classList.remove("hide-txt");
+  levelText.classList.remove("hide-txt");
 }
 
 // continue the game after pausing
