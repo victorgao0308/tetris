@@ -2,7 +2,11 @@
 The classic game of Tetris made with vanilla JavaScript. There is a 10 x 20 board, with the 7 tetrominoes.
 To play, simply put the files into a new directory and launch `index.html`.
 
-Controls:
+Also available to play on my personal website: https://www.victorgaodev.com/tetris
+
+The version on my website is slightly modified to be compatible with React.
+
+## Controls:
 Left arrow: move piece left\
 Right arrow: move piece right\
 Down arrow: increase falling speed of piece\
